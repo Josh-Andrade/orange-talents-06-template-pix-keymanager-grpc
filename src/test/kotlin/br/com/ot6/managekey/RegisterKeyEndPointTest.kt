@@ -306,8 +306,8 @@ class RegisterKeyServer {
 
     @Singleton
     fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel):
-            KeyManagerDeletaGrpcServiceGrpc.KeyManagerDeletaGrpcServiceBlockingStub {
+            KeyManagerRegistraGrpcServiceGrpc.KeyManagerRegistraGrpcServiceBlockingStub {
 
-        return KeyManagerDeletaGrpcServiceGrpc.newBlockingStub(channel)
+        return KeyManagerRegistraGrpcServiceGrpc.newBlockingStub(channel)
     }
 }

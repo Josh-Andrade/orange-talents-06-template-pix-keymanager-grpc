@@ -130,6 +130,23 @@ internal class DeleteKeyServiceTest(
     }
 
     @Test
+    fun `nao deve deletar chave pix inexistente`(){
+
+        val request = DeletePixKeyRequest.newBuilder()
+            .setClienteId("c56dfef4-7901-44fb-84e2-a2cefb157890")
+            .setPixKeyId("c56dfef4-7901-44fb-84e2-a2cefb157543")
+            .build()
+        val error = assertThrows<StatusRuntimeException> {
+            grpcClient.delete(request)
+        }
+
+        with(error){
+            assertEquals("NOT_FOUND: Chave pix não encontrada", message)
+            assertEquals(Status.NOT_FOUND.code, status.code)
+        }
+    }
+
+    @Test
     fun `nao deve deletar chave pix porque ela nao existe no banco central`(){
         Mockito.`when`(itauClient.buscarDadosClient("c56dfef4-7901-44fb-84e2-a2cefb157890"))
             .thenReturn(HttpResponse.ok(clientResponse))
