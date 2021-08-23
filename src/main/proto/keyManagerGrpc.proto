@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.ot6";
+option java_outer_classname = "KeyManagerGrpc";
+
+package br.com.ot6;
+
+service KeyManagerRegistraGrpcService {
+  rpc register (RegisterPixKeyRequest) returns (RegisterPixKeyResponse) {}
+}
+
+service KeyManagerDeletaGrpcService {
+  rpc delete(DeletePixKeyRequest) returns (DeletePixKeyResponse) {}
+}
+
+enum KeyType{
+  UNKNOWN_TIPO_CHAVE = 0;
+  CHAVE_ALEATORIA = 1;
+  CPF = 2;
+  EMAIL = 3;
+  CELULAR = 4;
+}
+
+enum AccountType{
+  UNKNOWN_TIPO_CONTA = 0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
+}
+
+message RegisterPixKeyRequest {
+  string clientId = 1;
+  KeyType keyType = 2;
+  string key = 3;
+  AccountType accountType = 4;
+}
+
+message RegisterPixKeyResponse {
+  string pixId = 1;
+}
+
+message errorMessages{
+  repeated string errors = 1;
+}
+
+message DeletePixKeyRequest{
+  string clienteId = 1;
+  string pixKeyId = 2;
+}
+
+message DeletePixKeyResponse{
+  string message = 1;
+}

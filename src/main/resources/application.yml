@@ -1,0 +1,33 @@
+micronaut:
+  application:
+    name: keyManagerGrpc
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/key_manager
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: zupper
+    dialect: POSTGRES
+jpa.default.properties.hibernate.hbm2ddl.auto: update
+
+grpc:
+  server:
+    health:
+      enable: true
+
+
+endpoints:
+  all:
+    port: 8085
+    sensitive: true
+  health:
+    enable: true
+    sensitive: false
+    details-visible: AUTHENTICATED
+
+http:
+  services:
+    erp-itau:
+      url: http://localhost:9091
+    bcb:
+      url: http://localhost:8082
