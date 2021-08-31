@@ -1,10 +1,12 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.register
 
 import br.com.ot6.*
 import br.com.ot6.bcb.*
+import br.com.ot6.bcb.Owner
 import br.com.ot6.itau.ClientAccountResponse
 import br.com.ot6.itau.Instituicao
 import br.com.ot6.itau.Titular
+import br.com.ot6.managekey.PixKeyRepository
 import br.com.ot6.managekey.domain.PixKey
 import io.grpc.ManagedChannel
 import io.grpc.Status
@@ -155,7 +157,7 @@ internal class RegisterKeyEndPointTest(
         val createPixKeyResponse = PixKeyDetailsResponse(
             KeyTypeBcb.EMAIL,
             "rafael.ponte@zup.com.br",
-            BankAccount("Rafael M C Ponte", "0001", "291900", AccountTypeBcb.CACC),
+            BankAccount("60701190", "0001", "291900", AccountTypeBcb.CACC),
             Owner(PersonType.NATURAL_PERSON, "Rafael M C Ponte", "02467781054"),
             LocalDateTime.now()
         )
@@ -263,7 +265,7 @@ internal class RegisterKeyEndPointTest(
 
         with(error) {
             assertEquals(Status.INVALID_ARGUMENT.code, status.code)
-            assertEquals("Parametros de entrada invalidos", status.description)
+            assertEquals("[clientId: Formato de UUID invalido]", status.description)
         }
 
     }
@@ -284,7 +286,7 @@ internal class RegisterKeyEndPointTest(
 
         with(error) {
             assertEquals(Status.INVALID_ARGUMENT.code, status.code)
-            assertEquals("Parametros de entrada invalidos", status.description)
+            assertEquals("[dto: Formato da chave pix invalido]", status.description)
         }
     }
 

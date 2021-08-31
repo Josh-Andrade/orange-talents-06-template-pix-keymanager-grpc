@@ -1,8 +1,7 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.register
 
 import br.com.ot6.*
 import br.com.ot6.handler.ErrorInterceptor
-import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import org.slf4j.LoggerFactory
 import javax.inject.Inject

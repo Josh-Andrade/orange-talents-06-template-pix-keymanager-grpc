@@ -1,4 +1,4 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.delete
 
 import br.com.ot6.DeletePixKeyRequest
 import br.com.ot6.DeletePixKeyResponse

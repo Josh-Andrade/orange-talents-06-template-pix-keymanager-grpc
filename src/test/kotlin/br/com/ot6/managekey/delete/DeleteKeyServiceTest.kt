@@ -1,11 +1,13 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.delete
 
 import br.com.ot6.*
 import br.com.ot6.bcb.*
+import br.com.ot6.bcb.Owner
 import br.com.ot6.itau.ClientAccountResponse
 import br.com.ot6.itau.ClientResponse
 import br.com.ot6.itau.Instituicao
 import br.com.ot6.itau.Titular
+import br.com.ot6.managekey.PixKeyRepository
 import br.com.ot6.managekey.domain.PixKey
 import io.grpc.ManagedChannel
 import io.grpc.Status
@@ -16,7 +18,6 @@ import io.micronaut.grpc.server.GrpcServerChannel
 import io.micronaut.http.HttpResponse
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -70,7 +71,7 @@ internal class DeleteKeyServiceTest(
         pixKeyDetailsResponse = PixKeyDetailsResponse(
             KeyTypeBcb.EMAIL,
             "rafael.ponte@zup.com.br",
-            BankAccount("Rafael M C Ponte",
+            BankAccount("60701190",
                 "0001",
                 "291900",
                 AccountTypeBcb.CACC),
@@ -124,7 +125,7 @@ internal class DeleteKeyServiceTest(
         }
 
         with(error){
-            assertEquals("NOT_FOUND: Chave pix não encontrada", message)
+            assertEquals("NOT_FOUND: Chave Pix não encontrada", message)
             assertEquals(Status.NOT_FOUND.code, status.code)
         }
     }
@@ -141,7 +142,7 @@ internal class DeleteKeyServiceTest(
         }
 
         with(error){
-            assertEquals("NOT_FOUND: Chave pix não encontrada", message)
+            assertEquals("NOT_FOUND: Chave Pix não encontrada", message)
             assertEquals(Status.NOT_FOUND.code, status.code)
         }
     }

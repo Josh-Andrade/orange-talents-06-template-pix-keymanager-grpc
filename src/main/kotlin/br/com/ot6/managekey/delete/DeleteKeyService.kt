@@ -1,4 +1,4 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.delete
 
 import br.com.ot6.BcbClient
 import br.com.ot6.ErpItauClient
@@ -6,12 +6,14 @@ import br.com.ot6.bcb.DeletePixKey
 import br.com.ot6.handler.ChavePixBcbDeleteException
 import br.com.ot6.handler.PixKeyNotFoundException
 import br.com.ot6.itau.ClientResponse
+import br.com.ot6.managekey.PixKeyRepository
 import br.com.ot6.managekey.domain.PixKey
 import br.com.ot6.managekey.dto.DeletePixKeyDto
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
 import org.slf4j.LoggerFactory
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.transaction.Transactional
@@ -30,15 +32,15 @@ class DeleteKeyService(
     @Transactional
     fun delete(@Valid deletePixKeyDto: DeletePixKeyDto?): String? {
         val key = deleteFromBcb(findPixKey(deletePixKeyDto), findClientFromItau(deletePixKeyDto!!))
-        repository.deleteById(deletePixKeyDto.pixId)
+        repository.deleteById(UUID.fromString(deletePixKeyDto.pixId))
         return key
     }
 
     private fun findPixKey(deletePixKeyDto: DeletePixKeyDto?): PixKey? {
         logger.info("Verificando se chave pix existe")
-        return repository.findByIdAndClienteId(deletePixKeyDto!!.pixId, deletePixKeyDto.clientId)
+        return repository.findByIdAndClienteId(UUID.fromString(deletePixKeyDto!!.pixId), UUID.fromString(deletePixKeyDto.clientId))
             .orElseThrow() {
-                throw PixKeyNotFoundException("Chave pix não encontrada")
+                throw PixKeyNotFoundException()
             }
     }
 

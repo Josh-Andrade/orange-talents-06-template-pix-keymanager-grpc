@@ -4,14 +4,20 @@ option java_multiple_files = true;
 option java_package = "br.com.ot6";
 option java_outer_classname = "KeyManagerGrpc";
 
+import "google/protobuf/timestamp.proto";
+
 package br.com.ot6;
 
 service KeyManagerRegistraGrpcService {
-  rpc register (RegisterPixKeyRequest) returns (RegisterPixKeyResponse) {}
+  rpc register(RegisterPixKeyRequest) returns (RegisterPixKeyResponse) {}
 }
 
 service KeyManagerDeletaGrpcService {
   rpc delete(DeletePixKeyRequest) returns (DeletePixKeyResponse) {}
+}
+
+service KeyManagerConsultaGrpcService {
+    rpc loadPixKey(FindPixKeyRequest) returns (FindPixKeyResponse) {}
 }
 
 enum KeyType{
@@ -50,4 +56,39 @@ message DeletePixKeyRequest{
 
 message DeletePixKeyResponse{
   string message = 1;
+}
+
+message FindPixKeyRequest{
+  message FilterForPixId{
+    string clienteId = 1;
+    string pixKeyId = 2;
+  }
+
+  oneof Filter{
+    FilterForPixId filterPixId = 1;
+    string key = 2;
+  }
+
+}
+
+message FindPixKeyResponse{
+  string clientId = 1;
+  string pixKeyId = 2;
+  KeyType keyType = 3;
+  string key = 4;
+  Owner owner = 5;
+  Account account = 6;
+  google.protobuf.Timestamp createdAt = 7;
+}
+
+message Owner{
+  string name = 1;
+  string document = 2;
+}
+
+message Account{
+  string bankName = 1;
+  string accountNumber = 2;
+  string agency = 3;
+  AccountType accountType = 4;
 }

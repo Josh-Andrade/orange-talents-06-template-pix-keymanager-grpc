@@ -1,14 +1,14 @@
-package br.com.ot6.managekey
+package br.com.ot6.managekey.register
 
 import br.com.ot6.BcbClient
 import br.com.ot6.ErpItauClient
 import br.com.ot6.bcb.CreatePixKeyRequest
-import br.com.ot6.handler.AccountClientException
+import br.com.ot6.handler.AccountClientNotFoundException
 import br.com.ot6.handler.PixKeyAlreadyExistsException
 import br.com.ot6.itau.ClientAccountResponse
+import br.com.ot6.managekey.PixKeyRepository
 import br.com.ot6.managekey.domain.PixKey
 import br.com.ot6.managekey.dto.NewPixKeyDto
-import io.micronaut.http.HttpResponse
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.validation.Validated
 import org.slf4j.LoggerFactory
@@ -51,7 +51,7 @@ class RegisterKeyService(
         val accountClientResponse = itauClient.buscarContaClient(dto?.clientId, dto?.accountType)
 
         if (accountClientResponse.body() == null) {
-            throw AccountClientException("Cliente ${dto?.clientId} não encontrado")
+            throw AccountClientNotFoundException("Cliente ${dto?.clientId} não encontrado")
         }
         return accountClientResponse.body()
     }

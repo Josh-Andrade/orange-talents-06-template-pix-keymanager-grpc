@@ -6,5 +6,5 @@ import javax.persistence.Embeddable
 @Embeddable
 data class BankAccount(val branch:String?, val accountNumber: String?, val participant: String?) {
 
-    constructor(bankAccount: BankAccount, nome: String?) : this(bankAccount.branch, bankAccount.accountNumber, "${bankAccount.participant} $nome")
+    constructor(bankAccount: BankAccount, nome: String?) : this(bankAccount.branch, bankAccount.accountNumber, bankAccount.participant)
 }

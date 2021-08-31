@@ -39,7 +39,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.xml:micronaut-jackson-xml")
     implementation("org.hibernate:hibernate-validator:6.1.6.Final")
-
+    implementation("org.apache.commons:commons-csv:1.5")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -87,7 +87,7 @@ sourceSets {
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:3.17.2" }
     plugins {
-        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.38.0" }
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.36.2" }
     }
     generateProtoTasks {
         all()*.plugins { grpc {} }

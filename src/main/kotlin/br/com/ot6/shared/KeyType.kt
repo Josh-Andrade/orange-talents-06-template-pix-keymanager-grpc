@@ -1,13 +1,15 @@
 package br.com.ot6.shared
 
+import br.com.ot6.KeyType
 import io.micronaut.validation.validator.constraints.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
 
 enum class KeyType {
     CHAVE_ALEATORIA {
         override fun valid(key: String?): Boolean = key.isNullOrBlank()
+        override fun returnEquivalentEnum(): KeyType = KeyType.CHAVE_ALEATORIA
     },
-    CPF {
+    CPF{
         override fun valid(key: String?): Boolean {
             if(key.equals("00000000000") ||
                 key.equals("11111111111") ||
@@ -26,6 +28,8 @@ enum class KeyType {
                 isValid(key, null)
             }
         }
+
+        override fun returnEquivalentEnum(): KeyType = KeyType.CPF
     },
     EMAIL {
         override fun valid(key: String?): Boolean {
@@ -34,15 +38,21 @@ enum class KeyType {
                 isValid(key, null)
             }
         }
+
+        override fun returnEquivalentEnum(): KeyType = KeyType.EMAIL
     },
-    CELULAR {
+    CELULAR{
         override fun valid(key: String?): Boolean {
             return key?.matches("^\\+[1-9][0-9]\\d{1,14}\$".toRegex())!!
         }
+
+        override fun returnEquivalentEnum(): KeyType = KeyType.CELULAR
     };
 
 
 
 
     abstract fun valid(key: String?): Boolean
+
+    abstract fun returnEquivalentEnum() : KeyType
 }

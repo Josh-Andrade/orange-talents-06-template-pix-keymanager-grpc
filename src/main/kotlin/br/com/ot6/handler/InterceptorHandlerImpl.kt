@@ -1,6 +1,6 @@
 package br.com.ot6.handler
 
-import br.com.ot6.managekey.RegisterKeyEndPoint
+import br.com.ot6.managekey.register.RegisterKeyEndPoint
 import com.google.rpc.BadRequest
 import io.grpc.Status
 import io.grpc.protobuf.StatusProto
@@ -21,23 +21,13 @@ class InterceptorHandlerImpl : MethodInterceptor<RegisterKeyEndPoint, Any> {
         try {
             return context.proceed()
         } catch (e: ConstraintViolationException) {
-            logger.error(
-                "Handle exception: ${e.javaClass.name} " +
-                        "when processing call to: ${context.targetMethod}", e
-            )
-
             GrpcEndpointsArguments(context).response()
                 .onError(
                     StatusProto.toStatusRuntimeException(getStatusProto(e))
                 )
             return null
-        } catch (e: ExceptionHandler) {
-            logger.error(
-                "Handle exception: ${e.javaClass.name} " +
-                        "when processing call to: ${context.targetMethod}", e
-            )
-
-            GrpcEndpointsArguments(context).response()
+        } catch (e: Exception) {
+          GrpcEndpointsArguments(context).response()
                 .onError(
                     e.status
                         .withDescription(e.message)
@@ -49,7 +39,7 @@ class InterceptorHandlerImpl : MethodInterceptor<RegisterKeyEndPoint, Any> {
 
     private fun getStatusProto(e: ConstraintViolationException) = com.google.rpc.Status.newBuilder()
         .setCode(Status.INVALID_ARGUMENT.code.value())
-        .setMessage("Parametros de entrada invalidos")
+        .setMessage(e.constraintViolations.map { "${it.propertyPath.last().name}: ${it.message}" }.toString())
         .addDetails(com.google.protobuf.Any.pack(getDetailsWithFieldViolations(e)))
         .build()
 
